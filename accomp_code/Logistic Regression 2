@@ -1,0 +1,24 @@
+Logistic Regression: Stochastic Gradient Descent and Muticlass Classification
+================
+
+:date: 2016-10-23
+:author: valilutzik
+
+
+In the previous post we talked about it logisitic regression, introduced its main concepts and worked out 2 examples by going through the typical steps of a logistic regression analysis.
+
+We talked principally about gradient descent as a way of obtaining the best parameters. But still gradient descent has some major drawbacks:
+[list drawbacks]
+
+We will now move on to stochastic gradient descent which is an instance of "online learning algorithms", which are algorithms that learn one observation at a time. This has the merit of allowing the classifier to update its parameters as new data comes in.
+
+So basically stochastic gradient descent goes like this:
+
+::
+
+	1) Initialize weights with random values
+	2) Repeat for each observation {
+		a) compute the gradient for one observation
+		b) use that gradient to update weights vector 
+	} Until stopping criteria met: Number of epochs/desired error rate achieved/ tiny change in the gradient
+

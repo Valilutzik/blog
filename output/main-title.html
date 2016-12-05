@@ -1,0 +1,532 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="/theme/pygments/github.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/font-awesome.min.css">
+
+
+
+
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+
+
+<meta name="author" content="valilutzik" />
+<meta name="description" content="Logistic regression, is a classification method, that performs well when classes are linearly separable. It is a very simple algorithm, and should be used as a first choice method when starting to model a classification problem. Though, this is not really what really differentiates it from other tools as there ..." />
+<meta name="keywords" content="">
+<meta property="og:site_name" content="Machine Learning Explained"/>
+<meta property="og:title" content="Main Title"/>
+<meta property="og:description" content="Logistic regression, is a classification method, that performs well when classes are linearly separable. It is a very simple algorithm, and should be used as a first choice method when starting to model a classification problem. Though, this is not really what really differentiates it from other tools as there ..."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="/main-title.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-10-22 00:00:00+02:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="/author/valilutzik.html">
+<meta property="article:section" content="misc"/>
+<meta property="og:image" content="">
+
+  <title>Machine Learning Explained &ndash; Main Title</title>
+
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="">
+        <img src="/theme/img/profile.png" alt="" title="">
+      </a>
+      <h1><a href=""></a></h1>
+
+
+
+      <ul class="social">
+      </ul>
+    </div>
+
+
+  </aside>
+  <main>
+
+
+<article class="single">
+  <header>
+    <h1 id="main-title">Main Title</h1>
+    <p>
+          Posted on Sat 22 October 2016 in <a href="/category/misc.html">misc</a>
+
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>Logistic regression, is a classification method, that performs well when classes are linearly separable. It is a very simple algorithm, and should be used as a first choice method when starting to model a classification problem. Though, this is not really what really differentiates it from other tools as there are plenty methods that can perform the same exact task.</p>
+<p>What makes logistic regression attractive is that it belongs to the family of probabilistic models. In many fields, this is important because aside from the fact that we want a linear model with all its interpretability advantages (think linear regression), we want to know how confident we are about assigning each observation to a given class with a certain probability.</p>
+<p>For instance a retail bank would want to launch a new product in the market. So maybe the analytics team will try to know beforehand what's the probability given the variables at hand (eg: age, location, salary,...) that each bank's customer will acquire that product. Next, they may discuss/communicate their results in a simple fashion to the marketing department or to their managers to gain more insights or feedback about the collected results. (By the way this is called an “attribution” problem).</p>
+<p>So if a linear regression model follows this structure:</p>
+<div class="math">
+\begin{equation*}
+\hat{y}_{reg}= w_0 + w_1x_1 + w_2x_2+ ... + w_nx_n
+\end{equation*}
+</div>
+<p>Where <span class="math">\(\hat{y}_{reg}\)</span> represents our prediction vector</p>
+<p>Which could be rewritten as:</p>
+<div class="math">
+\begin{equation*}
+\hat{y}_{reg}= \sum_{j=0}^{n}w_jx_j = \mathbf{w}^{T}\mathbf{x}
+\end{equation*}
+</div>
+<p>Then logistic regression extends it as</p>
+<div class="math">
+\begin{equation*}
+\hat{y}_{logistic} = f( \mathbf{w}^{T}\mathbf{x})
+\end{equation*}
+</div>
+<p>where <span class="math">\(f\)</span> is a nonlinear function whose form we'll see shortly.</p>
+<p>We can see then that the linear equation is transformed using a non-linear function . That’s why it belongs to the  <strong>Generalized linear models</strong> family. And they are called <em>linear</em> in the sense that the decision boundary is linear, something to keep in mind as we continue the discussion</p>
+<p>Now, if you have already worked with logistic regression before, and you’re confused as I used to be by the different forms it can take:  <em>logit</em>, <em>sigmoid</em>, <em>expit</em>, <em>logistic</em>,..., bear with me as things will be clearer soon.</p>
+<p>Again in the linear regression setting we have that:</p>
+<div class="math">
+\begin{equation*}
+\mu = \mathbb{E}[y|\mathbf{x}] = \mathbf{w}^{T}\mathbf{x}
+\end{equation*}
+</div>
+<!-- Here is a rapid illustration (taken from []) (maybe choose a different picture?) for the case  of a single variable (with beta as parameters and E[y]): -->
+<!-- .. figure:: ./images/errors_linreg.jpg -->
+<!-- :alt: The linear model -->
+<!-- :align: center -->
+<!-- :width: 400pt -->
+<p>We could have written the above equation for linear regression as said above:</p>
+<div class="math">
+\begin{equation*}
+f(\mu) = \mu = \mathbf{w}^{T}\mathbf{x}
+\end{equation*}
+</div>
+<p>Where <span class="math">\(f\)</span> is the identity function <span class="math">\(\mathbb{I}\)</span> applied on <span class="math">\(\mu\)</span></p>
+<p>If we suppose now that the <span class="math">\(f\)</span> function is the <strong>logit</strong> function:</p>
+<div class="math">
+\begin{equation*}
+f(\mu) = logit(\mu) = \log(\frac{\mu}{1-\mu}) =  \mathbf{w}^{T}\mathbf{x}
+\end{equation*}
+</div>
+<p>We will change symbols from <span class="math">\(\mu\)</span> to <span class="math">\(\pi\)</span> simply to stay consistent with the litterature on the subject.</p>
+<div class="math">
+\begin{equation*}
+f(\pi) = logit(\pi) = \log(\frac{\pi}{1-\pi}) =  \mathbf{w}^{T}\mathbf{x}
+\end{equation*}
+</div>
+<p>This is the <strong>logistic regression</strong> model with <span class="math">\(\pi = P(y=1|\mathbf{x})\)</span> representing the probability of <em>success</em></p>
+<p>The ratio <span class="math">\(\frac{\pi}{1-\pi}\)</span> is called the <strong>odds-ratio</strong> and <span class="math">\(log\)</span> applied to it is called the <strong>log-odds</strong></p>
+<div class="figure align-center">
+<img alt="Logit Function" src="./images/logit_function.jpg" style="width: 400pt;" />
+</div>
+<p>Solving for <span class="math">\(\pi\)</span>, we obtain the <strong>logistic</strong> or <strong>expit</strong> function:</p>
+<div class="math">
+\begin{equation*}
+\pi = logit^{-1}( \mathbf{w}^{T}\mathbf{x}) = \frac{\exp( \mathbf{w}^{T}\mathbf{x})}{1+\exp( \mathbf{w}^{T}\mathbf{x})} = \frac{1}{1+\exp(- \mathbf{w}^{T}\mathbf{x})}
+\end{equation*}
+</div>
+<p>Now what we get now is that the expected value is a proportion, representing the occurence of one of two events. So it is  bounded in the <span class="math">\([0,1]\)</span> interval, and could be interpreted therefore as a probability</p>
+<p>In this case the logit function is the <strong>link</strong> function and the logistic the <strong>activation</strong> function</p>
+<div class="figure align-center">
+<img alt="Logit Function" src="./images/expit_function.jpg" style="width: 400pt;" />
+</div>
+<p>The <em>logit</em> and its inverse, the <em>logistic</em> function are both s-shaped, that’s why they are both commonly referred to as <strong>sigmoid</strong> functions.</p>
+<p>So logistic regression is just a generalized form of linear regression where we took linear inputs <span class="math">\(\mathbf{xw}\)</span> and changed the output domain to <span class="math">\([0,1]\)</span> with our function <span class="math">\(f\)</span>.</p>
+<p>You may be wondering now:  <em>We’re predicting probabilities but I thought logistic regression was a    classification algorithm? What about that linear boundary you were talking about at the beginning?</em></p>
+<p>Well, to classify our input data with the model, we simply have to choose a threshold value.</p>
+<p>For instance, we can simply state that:</p>
+<div class="math">
+\begin{equation*}
+\hat{y}=\left\{\begin{array}{rl} 1 &amp; \mbox{if} \quad \pi &gt; 0.5 \\ 0 &amp; \mbox{Otherwise}\end{array}\right.
+\end{equation*}
+</div>
+<p>We can choose a different threshold than <span class="math">\(0.5\)</span> in other situations. But for most purposes this one works well.</p>
+<p>For two variables we can get intuition about how things work. Suppose that after optimizing our parameters, we obtained the following best weights vector according to our logistic model:</p>
+<div class="math">
+\begin{equation*}
+\mathbf{w} = \begin{bmatrix} 2 \\ 1 \\ -4 \end{bmatrix}
+\end{equation*}
+</div>
+<p>We can predict that <span class="math">\(y=1\)</span> if:</p>
+<div class="math">
+\begin{equation*}
+2x_{1} + x_{2} -4 &gt; 0
+\end{equation*}
+</div>
+<p>Equivalently:</p>
+<div class="math">
+\begin{equation*}
+2x_{1} + x_{2} &gt; 4
+\end{equation*}
+</div>
+<p>We can visualize this easily:</p>
+<div class="figure align-center">
+<img alt="Logistic regression decision boundary" src="./images/dec_bound.png" style="width: 400pt;" />
+</div>
+<p>You can see that the decision boundary is what separates the classes. It is linear, implying that if our data points <strong>can't</strong> be separated with a straight line, then it is better to use a more complex classification method, or we could apply non-linear transformations directly into the variables.</p>
+<p>For instance if we have only two variables <span class="math">\(x_{1}\)</span> and <span class="math">\(x_{2}\)</span> then we could transform them in a polynomial format, like this example:</p>
+<div class="math">
+\begin{equation*}
+y = w_{0} + w_{1}x_{1} + w_{2}x_{2}^{2} + w_{3}x_{2}x_{1}
+\end{equation*}
+</div>
+<p>Although we will obtain a complex boundary, this method is not advisable because as the number of the variables grows we will obtain a huge number of combinations in addition to checking each model's accuracy, trying to avoid each time the overfitting problem.</p>
+<p>So the best practice is to try logisitic regression first and evaluate its performance. If things are not satisfactory, move on to another algorithm.</p>
+<p>2 - Parameters/Weights optimization:</p>
+<p>Now that we understand how the logistic regression presents itself, the next step is to know how to maximize the parameters <span class="math">\(w\)</span> so as to fit training data.</p>
+<p>And this is the most important part to comprehend in order to have a deeper idea on what your algorithm does when working with real-world datasets.</p>
+<p>To learn then the optimal parameters, we will resort to <strong>Maximum Likelihood Estimation</strong>. It is a widely used method, that answers the question: <em>What are the parameters that will maximize the probability of obtaining my sample data.</em></p>
+<p>Normally, in practice, you won't get to work with it as you'll mainly keep busy tuning in and monitoring your optimization algorithm (for example gradient descend which we'll see shortly). But it is an important prerequisite in order to understand how logistic regression is trained.</p>
+<p>In sum likelihood is proportional to the <em>probability of observing data given our model</em>, which we write as <span class="math">\(p(D|M)\)</span>. Assuming observations are sampled independently we then have:</p>
+<div class="math">
+\begin{equation*}
+p(D|M) = \prod_{i=1}^{m} p(\mathbf{x}_i,y_{i})
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+p(D|M) = \prod_{i=1}^{m} p(y_{i}|\mathbf{x}_i)p(\mathbf{x}_i)
+\end{equation*}
+</div>
+<p>In logistic regression we are interested in learning the <strong>posterior</strong> <span class="math">\(p(y_{i}|\mathbf{x}_i)\)</span>, so we can leave out the <span class="math">\(p(\mathbf{x}_i)\)</span> part.</p>
+<p>So our likelihood function, which we'll try to maximize and interests us is:</p>
+<div class="math">
+\begin{equation*}
+L(\mathbf{w}) = \prod_{i=1}^{m}p(y_i|\mathbf{x}_i;\mathbf{w})
+\end{equation*}
+</div>
+<p>We will now apply the <span class="math">\(log\)</span> function over it so as to make calculations easier, and take advantage of a nice property of the <span class="math">\(logistic\)</span> function as we'll see shorty.</p>
+<p>So we get the log-likelihood as :</p>
+<div class="math">
+\begin{equation*}
+\mathcal{L}_{\mathbf{w}} = \sum_{i=1}^{m} \log p(y_{i}|\mathbf{x}_i;\mathbf{w})
+\end{equation*}
+</div>
+<p>And given that our logistic function is modeled as:</p>
+<div class="math">
+\begin{equation*}
+\left\{\begin{array}{rl} p(y_i = 1|\mathbf{x}_i) = f(\mathbf{x}_i;\mathbf{w})  \\ p(y_i = 0|\mathbf{x}_i) = 1 - f(\mathbf{x}_i;\mathbf{w}) &amp; \end{array}\right.
+\end{equation*}
+</div>
+<p>where <span class="math">\(f(\mathbf{x};\mathbf{w}) = \frac{1}{1+\exp(-\mathbf{w}^{T}\mathbf{x})}\)</span> is our logistic function</p>
+<p>We can rewrite it in a short way as:</p>
+<div class="math">
+\begin{equation*}
+p(y_i|\mathbf{x}_i) = f(\mathbf{x}_i;\mathbf{w})^{y_i}( 1 - f(\mathbf{x}_i;\mathbf{w}))^{1-y_i}
+\end{equation*}
+</div>
+<p>You can check each case by replacing <span class="math">\(y_i\)</span> by its respective value</p>
+<p>So we obtain:</p>
+<div class="math">
+\begin{equation*}
+\mathcal{L}(\mathbf{w}) = \sum_{i=1}^{m} \log [f(\mathbf{x}_i;w)^{y_{i}}(1-f(\mathbf{x}_i;w))^{1-y_{i}}]
+\end{equation*}
+</div>
+<p>To make things easier, we'll compute the likelihood of sample <span class="math">\(i\)</span> (having to carry the sums around would be cumbersome)</p>
+<div class="math">
+\begin{equation*}
+\mathcal{L}_{i}(\mathbf{w}) = \log [f(\mathbf{x}_i;\mathbf{w})^{y_{i}}(1-f(\mathbf{x}_i;\mathbf{w}))^{1-y_{i}}] = y_{i} \log f(\mathbf{x}_i;\mathbf{w}) + (1-y_{i}) \log (1-f(\mathbf{x}_i;\mathbf{w}))
+\end{equation*}
+</div>
+<p>To find the parameters that maximize maximum likelihood, we typically differentiate the log likelihood with respect to parameters, set the derivatives equal to zero, and solve the resulting equations in a closed form.</p>
+<p>Lets try to do that, by taking the gradient of <span class="math">\(\mathcal{L}_{i}\)</span> with respect to <span class="math">\(\mathbf{w}\)</span> (the gradient simply means that we are derivating <span class="math">\(\mathcal{L}_{i}\)</span> along each parameter <span class="math">\(j\)</span> like this: <span class="math">\(\nabla_{\mathbf{w}} \mathcal{L}_{i} = [\frac{\partial \mathcal{L}_{i}}{\partial \mathbf{w}_{1}},...,\frac{\partial \mathcal{L}_{i}}{\partial \mathbf{w}_{j}},...,\frac{\partial \mathcal{L}_{i}}{\partial \mathbf{w}_{n}}]'\)</span> where <span class="math">\(n\)</span> is the number of variables):</p>
+<div class="math">
+\begin{equation*}
+\nabla_{\mathbf{w}} \mathcal{L}_{i}  = \frac{y_{i}}{f(\mathbf{x}_i;\mathbf{w})}\nabla_{\mathbf{w}}f - \frac{1-y_{i}}{1-f(\mathbf{x}_i;\mathbf{w})}\nabla_\mathbf{w}f
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+\nabla_{\mathbf{w}} \mathcal{L}_{i} = \frac{y_{i}}{f}f(1-f)\mathbf{x}_i - \frac{1-y_{i}}{1-f}f(1-f)\mathbf{x}_i
+\end{equation*}
+</div>
+<p>Here we used the nice property we talked about earlier of logistic regression (which will be also handy when working with neural networks) where:</p>
+<div class="math">
+\begin{equation*}
+\frac{df(x)}{dx} = f(x)(1-f(x))
+\end{equation*}
+</div>
+<p>Going back to our last line:</p>
+<div class="math">
+\begin{equation*}
+\nabla_{\mathbf{w}} \mathcal{L}_{i}   =  \frac{y_{i}}{f}f(1-f)\mathbf{x}_i - \frac{1-y_{i}}{1-f}f(1-f)\mathbf{x}_i
+\end{equation*}
+</div>
+<p>Simplifiying by <span class="math">\(f\)</span>:</p>
+<div class="math">
+\begin{equation*}
+\nabla_{\mathbf{w}} \mathcal{L}_{i} =   (y_{i}(1-f) - (1-y_{i})f )\mathbf{x}_i
+\end{equation*}
+</div>
+<p>We finally get our expression:</p>
+<div class="math">
+\begin{equation*}
+\nabla_{\mathbf{w}} \mathcal{L}_{i} =  (y_{i} - f(\mathbf{x}_i;\mathbf{w}))\mathbf{x}_i
+\end{equation*}
+</div>
+<p>For all our samples:</p>
+<div class="math">
+\begin{equation*}
+\nabla_{\mathbf{w}}\mathcal{L} = \sum_{i=1}^{m}(y_{i} - f(\mathbf{x}_i;\mathbf{w}))\mathbf{x}_i
+\end{equation*}
+</div>
+<p>The problem now is that we can't solve this directly by setting it to <span class="math">\(0\)</span> as the group of equations obtained is non-linear in the set of parameters <span class="math">\(\mathbf{w}\)</span>. We will try to find then the optimal <span class="math">\(\mathbf{w}\)</span> vector numerically using gradient ascent. This method has the merit of being very simple to comprehend.</p>
+<p>Note that here we are trying to maximize the likelihood function, so gradient ascent must be used. But by writing</p>
+<div class="math">
+\begin{equation*}
+J(\mathbf{w}) = - \mathcal{L}(\mathbf{w})
+\end{equation*}
+</div>
+<p>As <span class="math">\(J(\mathbf{w})\)</span> representing a <strong>cost function</strong> that we want to minimize, we will resort then to gradient descent.</p>
+<p>The steps of batch gradient descent are:</p>
+<pre class="literal-block">
+1) Initialize weights with random values
+2) Repeat {
+        a) compute the gradient for the entire dataset
+        b) use that gradient to update weights vector
+} Until stopping criteria met
+</pre>
+<p>As gradient descent is an iterative method, it has to start somewhere, so in <em>step 1)</em> we just initialize parameters to some random values, nothing fancy here.</p>
+<p>In <em>step 2)</em> we keep repeating actions inside the curly brackets, first as of <em>2.a)</em> by computing the gradient for the entire dataset in one pass. In other words:</p>
+<div class="math">
+\begin{equation*}
+gradient(J(\mathbf{w})) = \nabla_{\mathbf{w}} J(\mathbf{w}) = - \sum_{i=1}^{m}(y_{i} - f(\mathbf{x}_i;\mathbf{w}))\mathbf{x}_i
+\end{equation*}
+</div>
+<p>This is done for each parameter <span class="math">\(\mathbf{w}_{j}\)</span> as follows:</p>
+<div class="math">
+\begin{equation*}
+\frac{\partial J(\mathbf{w})}{\partial \mathbf{w}_{j}}=- \sum_{i=1}^{m}(y_{i} - f(\mathbf{x}_i;\mathbf{w}))\mathbf{x}_{ij}
+\end{equation*}
+</div>
+<p>Then update the weights vector in <em>2.b)</em> for each parameter <span class="math">\(\mathbf{w}_{j}\)</span> as follows:</p>
+<div class="math">
+\begin{equation*}
+\mathbf{w}_{j+1} \leftarrow \mathbf{w}_{j} + \eta \frac{\partial J(\mathbf{w})}{\partial \mathbf{w}_{j}}
+\end{equation*}
+</div>
+<p>What's really nice about the above update is that weights update is proportional to the error, such that:  <span class="math">\(error_{i} = y_i - f(\mathbf{x}_i;\mathbf{w})\)</span>. So if our function correctly predicts the class along direction <span class="math">\(j\)</span> for instance, the weight vector doesn't change in that direction.</p>
+<p>Note that the weights vector is computed at once (i.e. the <em>step 2)</em> is done directly):</p>
+<div class="math">
+\begin{equation*}
+\mathbf{w}_{new} \leftarrow \mathbf{w}_{old} + \eta \nabla_{\mathbf{w}} J(\mathbf{w})
+\end{equation*}
+</div>
+<p>And we keep iterating till achieving our stopping condition. For example, after a fixed number of iterations (as we'll see in our code below), after achieving a desired error rate or if there is a tiny change in the value of the gradient.</p>
+<p>That's all about it! We will code what we learned in Python, to further understand the underlying concepts. But in fact you won't do that normally, as you will resort to a ML library. Scikit-learn has a very nice API that makes coding machine learning very effortless and provides a plethora of options. Furthermore, scikit itself uses in the background very optimized modules. So it is advisable to get acquainted with its excellent documentation.</p>
+<p>3- Practicing what we have learned:</p>
+<p>Ok, so now we will apply the theory to 2 datasets.</p>
+<p>We'll apply the pure Python implementation on a mock linearly separable dataset so as not to make things complicated. Then we'll move on to a real dataset analyzed with scikit.</p>
+<p>In principle we simply have to follow these steps:</p>
+<pre class="literal-block">
+a- Preprocess the data
+b- Fit the model to training data
+c- Use the fitted model to predict new data
+</pre>
+<p>3.1 - Raw Python:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+
+
+<span class="c1">#Creating the training and test sets</span>
+<span class="n">class_data</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_redundant</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">class_sep</span> <span class="o">=</span> <span class="mf">2.5</span><span class="p">,</span> <span class="n">n_clusters_per_class</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">data</span><span class="o">=</span> <span class="n">class_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">target</span> <span class="o">=</span> <span class="n">class_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1">#add intercept</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">1</span><span class="p">)),</span><span class="n">data</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1">#Sigmoid function definition. Here we could have used the expit function from scipy.special</span>
+<span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">))</span>
+
+<span class="c1">#Function to calculate gradient descent</span>
+<span class="k">def</span>  <span class="nf">gradDescent</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">maxIter</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+        <span class="n">m</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxIter</span><span class="p">):</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">weights</span><span class="p">))</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">)</span>
+                <span class="c1">#Below we compute the gradient and update the weights vector as outlined in 2)</span>
+                <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">+</span> <span class="n">learning_rate</span> <span class="o">*</span>  <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">error</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">weights</span>
+
+<span class="c1">#Here we plot the boundary in 2D for the first 2 variables (without counting the intercept)</span>
+<span class="k">def</span>  <span class="nf">plot_boundary</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;red&quot;</span><span class="p">,</span><span class="s2">&quot;blue&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">x1</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">][</span><span class="n">target</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+                <span class="n">x2</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">2</span><span class="p">][</span><span class="n">target</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">2</span><span class="p">])</span> <span class="o">-</span><span class="mi">1</span> <span class="p">,</span><span class="nb">max</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]),</span><span class="nb">max</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]),</span><span class="mf">0.01</span><span class="p">)</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">weights</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">x1</span><span class="p">)</span><span class="o">/</span><span class="n">weights</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p>We start by applying the <tt class="docutils literal">gradDescent()</tt> function on <tt class="docutils literal">data</tt> and <tt class="docutils literal">target</tt> :</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;</span>&gt;&gt;w <span class="o">=</span> gradDescent<span class="o">(</span>data,target<span class="o">)</span>
+</pre></div>
+<p>We obtain the following weights:</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;</span>&gt;&gt;w
+<span class="go">array([[ -1.95945677],</span>
+<span class="go">       [ 11.95310126],</span>
+<span class="go">       [ 7.09669171]])</span>
+</pre></div>
+<p>Moving on to visualizing our separating line:</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;</span>&gt;&gt;plot_boundary<span class="o">(</span>w,data,target<span class="o">)</span>
+</pre></div>
+<p>So the boundary obtained after our choosen number of iterations is:</p>
+<div class="figure align-center">
+<img alt="Logit Function" src="./images/class_data.png" style="width: 400pt;" />
+</div>
+<p>Our line does a good job at separating data points, although we see visually that it is possible to draw other valid lines. The data is easily separable so even with a small number of iterations we could have a satisfactory result.  You can try to customize further your own dataset, with the more flexible <tt class="docutils literal">make_blobs()</tt> method.</p>
+<p>Finally we can classify new data with a simple function using a threshold of <span class="math">\(0.5\)</span>.</p>
+<div class="highlight"><pre><span></span><span class="c1">#Return the class label according to threshold</span>
+<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">new_data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">new_data</span><span class="p">,</span> <span class="n">weights</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+<p>We test that with a simple list [issue here!]</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;</span>&gt;&gt;predict<span class="o">(</span>w, <span class="o">[</span>1, 2.33, 1.85<span class="o">])</span>
+<span class="go">array([1])</span>
+</pre></div>
+<p>3.2- Sklearn Implementation</p>
+<p>Now we will use scikit with a real dataset</p>
+<p>The dataset we will use comes from the UCI repository. This dataset is about a marketing campaign, where given our predictors, we want to know if an existing client will subscribe a term deposit. Full description is available <a class="reference external" href="https://archive.ics.uci.edu/ml/datasets/Bank+Marketing">here</a>.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">import</span> <span class="nn">StringIO</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">SGDClassifier</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://archive.ics.uci.edu/ml/machine-learning-databases/00222/bank.zip&quot;</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">StringIO</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;bank.csv&quot;</span><span class="p">),</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">data_processing</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">_get_numeric_data</span><span class="p">()</span><span class="o">.</span><span class="n">values</span> <span class="c1">#we will choose only numeric values to leave things simple</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">1</span><span class="p">)),</span><span class="n">data</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ix</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">codes</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data_processing</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="c1">#Splitting our data to training and test sets, with a test_size of say 0.33</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">33</span><span class="p">)</span>
+<span class="c1">#Unfortunately scikit doesn&#39;t come with gradient descent applied on logisitic regression, we will use stochastic gradient descent instead</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="c1">#Fitting the model to training data</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+<p>Scikit provides a very simple way to score our fitted model in new data, with the help of the <tt class="docutils literal">score()</tt> method, which simply returns the mean accuracy computed on our test data.</p>
+<p>So finally, this applied to our test set data results in a score of:</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;</span>&gt;&gt;clf.score<span class="o">(</span>X_test, y_test<span class="o">)</span>
+<span class="go">0.82439678284182305</span>
+</pre></div>
+<ol class="arabic simple" start="4">
+<li>Conclusion</li>
+</ol>
+<p>This is it for today's post. I hope that it is informative. I have omitted the use of stochastic gradient descent, regularization and multi-label classification as this will make this tutorial very long. But I will try to publish eventually a short sequel on those topics with the same general outline as this one.</p>
+<script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' }, Macros: {} }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+  <div class="tag-cloud">
+    <p>
+    </p>
+  </div>
+
+
+
+
+</article>
+
+    <footer>
+<p>&copy; Valilutzik </p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Machine Learning Explained ",
+  "url" : "",
+  "image": "",
+  "description": ""
+}
+</script>
+</body>
+</html>
